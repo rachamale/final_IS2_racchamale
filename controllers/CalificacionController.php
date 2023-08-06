@@ -48,6 +48,38 @@ class CalificacionController{
         }
     }
 
+/**
+ * Método para eliminar una calificación mediante la API.
+ * obtener el ID de la calificación a eliminar, marcar el registro con 'detalle_situacion' = 0
+ * en la base de datos y enviar una respuesta JSON que indica si la eliminación fue exitosa o si ocurrió un error.
+ */
+public static function API_DELETE(){
+    try {
+        $calificacion_id = $_POST['calificacion_id'];
+        $calificacion = Calificacion::php_FindById($calificacion_id);
+        $calificacion->detalle_situacion = 0;
+        $resultado = $calificacion->php_Delete();
+
+        if($resultado['resultado'] == 1){
+            echo json_encode([
+                'mensaje' => 'Registro eliminado correctamente',
+                'codigo' => 1
+            ]);
+        }else{
+            echo json_encode([
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => 'Ocurrió un error',
+            'codigo' => 0
+        ]);
+    }
+}
+
 
 
 
