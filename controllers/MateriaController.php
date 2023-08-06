@@ -112,5 +112,33 @@ public static function API_DELETE(){
     }
 }
 
+/**
+ * Método para obtener una lista de materias mediante la API.
+ * Este método se utiliza para recibir datos enviados por una solicitud GET,
+ * filtrar los registros de materias en la base de datos según el nombre de materia proporcionado,
+ * y enviar una respuesta JSON con la lista de materias que coinciden con el criterio de búsqueda.
+ */    
+public static function API_READ(){
+    // $materias = Materia::all();
+    $materia_nombre = $_GET['ma_nombre'];
+
+    $sql = "SELECT * FROM materias where detalle_situacion = 1 ";
+    if($materia_nombre != '') {
+        $sql.= " and ma_nombre like '%$materia_nombre%' ";
+    }
+   
+    try {
+        
+        $materias = Materia::fetchArray($sql);
+
+        echo json_encode($materias);
+    } catch (Exception $e) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => 'Ocurrió un error',
+            'codigo' => 0
+        ]);
+    }
+}
 
 }
