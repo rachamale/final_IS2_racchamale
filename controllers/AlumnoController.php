@@ -76,6 +76,37 @@ class AlumnoController{
         }
     }
 
-    
+    // Método para eliminar un registro de alumno mediante la API.
+    //obtener el ID del alumno a eliminar, marcar el registro con 'detalle_situacion' = 0
+    //en la base de datos y enviar una respuesta JSON que indica si la eliminación fue exitosa o si ocurrió un error.
+ 
+ public static function API_DELETE(){
+    try {
+        $alumno_id = $_POST['alumno_id'];
+        $alumno = Alumno::php_FindById($alumno_id);
+        $alumno->detalle_situacion = 0;
+        $resultado = $alumno->php_Delete();
+
+        if($resultado['resultado'] == 1){
+            echo json_encode([
+                'mensaje' => 'Registro eliminado correctamente',
+                'codigo' => 1
+            ]);
+        }else{
+            echo json_encode([
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => 'Ocurrió un error',
+            'codigo' => 0
+        ]);
+    }
+}
+
+
 
 }
