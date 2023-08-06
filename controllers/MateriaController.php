@@ -48,4 +48,37 @@ class MateriaController{
         }
     }
     
+/**
+ * Método para actualizar una materia mediante la API.
+ * crear un nuevo objeto Materia a partir de los datos recibidos y actualizar la materia correspondiente
+ * en la base de datos.
+ * Luego, envía una respuesta JSON indicando si la actualización fue exitosa o si ocurrió un error.
+ */
+public static function API_UPDATE(){
+    try {
+        $materia = new Materia($_POST);
+        
+        $resultado = $materia->php_Update();
+
+        if($resultado['resultado'] == 1){
+            echo json_encode([
+                'mensaje' => 'Registro modificado correctamente',
+                'codigo' => 1
+            ]);
+        }else{
+            echo json_encode([
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => 'Ocurrió un error',
+            'codigo' => 0
+        ]);
+    }
+}
+
+
 }
