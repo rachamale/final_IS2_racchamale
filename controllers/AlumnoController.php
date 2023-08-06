@@ -107,6 +107,37 @@ class AlumnoController{
     }
 }
 
+    //Método para obtener una lista de alumnos mediante la API.
+    // Este método se utiliza para recibir datos enviados por una solicitud GET,
+    //filtrar los registros de alumnos en la base de datos según el nombre y apellido proporcionados,
+    //y enviar una respuesta JSON con la lista de alumnos que coinciden con los criterios de búsqueda.
+ 
+    public static function API_READ(){
+        // $alumnos = Alumno::all();
+        $alumno_nombre = $_GET['alu_nombre'];
+        $alumno_apellido = $_GET['alu_apellido'];
+
+        $sql = "SELECT * FROM alumnos where detalle_situacion = 1 ";
+        if($alumno_nombre != '') {
+            $sql.= " and alu_nombre like '%$alumno_nombre%' ";
+        }
+        if($alumno_apellido != '') {
+            $sql.= " and alu_apellido = $alumno_apellido ";
+        }
+        try {
+            
+            $alumnos = Alumno::fetchArray($sql);
+    
+            echo json_encode($alumnos);
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    }
+
 
 
 }
