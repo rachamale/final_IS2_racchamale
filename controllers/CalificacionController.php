@@ -49,6 +49,39 @@ class CalificacionController{
     }
 
 /**
+ * Método para actualizar una calificación mediante la API.
+ * crear un nuevo objeto Calificacion a partir de los datos recibidos y actualizar la calificación correspondiente
+ * en la base de datos.
+ * Luego, envía una respuesta JSON indicando si la actualización fue exitosa o si ocurrió un error.
+ */
+public static function API_UPDATE(){
+    try {
+        $calificacion = new Calificacion($_POST);
+        
+        $resultado = $calificacion->php_Update();
+
+        if($resultado['resultado'] == 1){
+            echo json_encode([
+                'mensaje' => 'Registro modificado correctamente',
+                'codigo' => 1
+            ]);
+        }else{
+            echo json_encode([
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => 'Ocurrió un error',
+            'codigo' => 0
+        ]);
+    }
+}
+
+
+/**
  * Método para eliminar una calificación mediante la API.
  * obtener el ID de la calificación a eliminar, marcar el registro con 'detalle_situacion' = 0
  * en la base de datos y enviar una respuesta JSON que indica si la eliminación fue exitosa o si ocurrió un error.
@@ -79,8 +112,6 @@ public static function API_DELETE(){
         ]);
     }
 }
-
-
 
 
 }
