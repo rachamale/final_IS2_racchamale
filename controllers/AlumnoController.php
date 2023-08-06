@@ -47,3 +47,35 @@ class AlumnoController{
             ]);
         }
     }
+
+    //Método para actualizar un registro existente de alumno mediante la API.
+    //crear un objeto Alumno a partir de los datos recibidos y actualizar el registro correspondiente en la base de datos.
+    public static function API_UPDATE(){
+        try {
+            $alumno = new Alumno($_POST);
+            
+            $resultado = $alumno->php_Update();
+
+            if($resultado['resultado'] == 1){
+                echo json_encode([
+                    'mensaje' => 'Registro modificado correctamente',
+                    'codigo' => 1
+                ]);
+            }else{
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error',
+                    'codigo' => 0
+                ]);
+            }
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    }
+
+    
+
+}
