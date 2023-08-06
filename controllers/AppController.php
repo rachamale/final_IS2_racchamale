@@ -1,12 +1,25 @@
 <?php
 
 namespace Controllers;
-
+use Exception;
+use Model\Alumno;
 use MVC\Router;
 
-class AppController {
+class AlumnoController {
     public static function index(Router $router){
-        $router->render('pages/index', []);
+        //se de clara una variable para almacenar
+        $grados = static::grados();
+        $armas = static::armas();
+        $router->render('alumnos/index', [
+            // se renderiza a la vista viejo pero mira
+            'grados' => $grados, //buena onda 
+            'armas' => $armas
+       ]);
+
+
     }
 
+
 }
+
+?>
