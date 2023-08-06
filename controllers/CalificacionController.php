@@ -113,5 +113,35 @@ public static function API_DELETE(){
     }
 }
 
+/**
+ * Método para obtener una lista de calificaciones mediante la API.
+ * Este método se utiliza para recibir datos enviados por una solicitud GET,
+ * filtrar los registros de calificaciones en la base de datos según el alumno y materia proporcionados,
+ * y enviar una respuesta JSON con la lista de calificaciones que coinciden con los criterios de búsqueda.
+ */
+public static function API_READ(){
+    $calificacion_alumno = $_GET['calif_alumno'];
+    $calificacion_materia = $_GET['calif_materia'];
+
+    $sql = "SELECT * FROM calificaciones where detalle_situacion = 1 ";
+    if($calificacion_alumno != '') {
+        $sql.= " and calif_alumno like '%$calificacion_alumno%' ";
+    }
+    if($calificacion_materia != '') {
+        $sql.= " and calif_materia = $calificacion_materia ";
+    }
+    try {
+        
+        $calificaciones = Calificacion::fetchArray($sql);
+
+        echo json_encode($calificaciones);
+    } catch (Exception $e) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => 'Ocurrió un error',
+            'codigo' => 0
+        ]);
+    }
+}
 
 }
