@@ -47,7 +47,7 @@ class MateriaController{
             ]);
         }
     }
-    
+
 /**
  * Método para actualizar una materia mediante la API.
  * crear un nuevo objeto Materia a partir de los datos recibidos y actualizar la materia correspondiente
@@ -63,6 +63,38 @@ public static function API_UPDATE(){
         if($resultado['resultado'] == 1){
             echo json_encode([
                 'mensaje' => 'Registro modificado correctamente',
+                'codigo' => 1
+            ]);
+        }else{
+            echo json_encode([
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    } catch (Exception $e) {
+        echo json_encode([
+            'detalle' => $e->getMessage(),
+            'mensaje' => 'Ocurrió un error',
+            'codigo' => 0
+        ]);
+    }
+}
+
+/**
+ * Método para eliminar una materia mediante la API.
+ * obtener el ID de la materia a eliminar, marcar el registro con 'detalle_situacion' = 0
+ * en la base de datos y enviar una respuesta JSON que indica si la eliminación fue exitosa o si ocurrió un error.
+ */
+public static function API_DELETE(){
+    try {
+        $materia_id = $_POST['materia_id'];
+        $materia = Materia::php_FindById($materia_id);
+        $materia->detalle_situacion = 0;
+        $resultado = $materia->php_Delete();
+
+        if($resultado['resultado'] == 1){
+            echo json_encode([
+                'mensaje' => 'Registro eliminado correctamente',
                 'codigo' => 1
             ]);
         }else{
