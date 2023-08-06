@@ -18,3 +18,32 @@ class AlumnoController{
         ]);
 
     }
+
+    //Método para crear un nuevo registro de alumno mediante la API
+    //Este método se utiliza para recibir datos enviados por una solicitud POST,
+    //crear un nuevo objeto Alumno y guardarlo en la base de datos.
+    public static function API_CREATE(){
+        try {
+            $alumno = new Alumno($_POST);
+            $resultado = $alumno->php_Create();
+
+            if($resultado['resultado'] == 1){
+                echo json_encode([
+                    'mensaje' => 'Registro guardado correctamente',
+                    'codigo' => 1
+                ]);
+            }else{
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error',
+                    'codigo' => 0
+                ]);
+            }
+            // echo json_encode($resultado);
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    }
