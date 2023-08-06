@@ -53,6 +53,7 @@ class ActiveRecord {
         // debuguear($resultado);
         return $resultado;
     }
+    
 
     // Busca un registro por su id
     public static function find($id) {
